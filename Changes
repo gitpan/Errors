@@ -2,7 +2,11 @@ Revision history for Errors::Errors.pm
 -----------------------------------------------
        
 1.00   4 Feb 2002
-       - First release
+       - First release.
 
 1.01   8 May 2002
-       - Bug in pointers removed
+       - Bug in pointers removed.
+
+1.02   22 Jan 2003
+       - Extended 'error' proceedings.
+       - Better handling of signals.

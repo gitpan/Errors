@@ -1,0 +1,556 @@
+<html>
+<head>
+<title>WebTools Errors module</title>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<meta name="keywords" content="Errors::Errors, Errors, WebTools, Documentation, Perl, CGI">
+<meta name="description" content="Errors::Errors, Errors">
+<meta name="author" content="www.proscriptum.com">
+<meta name="robots" content="ALL">
+<meta name="distribution" content="GLOBAL">
+<meta name="copyright" content="www.proscriptum.com">
+<meta name="revisit-after" content="30Days">
+<META HTTP-EQUIV="imagetoolbar" CONTENT="no">
+<style type="text/css">
+<!--
+ .RO_A:link    {COLOR: #006666;	TEXT-DECORATION: none;}
+ .RO_A:visited {COLOR: #006666;	TEXT-DECORATION: none;}
+ .RO_A:active  {COLOR: #006666;	TEXT-DECORATION: none;}
+ .RO_A:hover   {COLOR: #208686;	TEXT-DECORATION: none;}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" leftmargin="4" topmargin="4" marginwidth="4" marginheight="4" link="#006666" vlink="#006666" alink="#006666">
+<a name="top"></a><br>
+<center>
+  <table border="0" cellspacing="1" cellpadding="1" bgcolor="#333333" width="800">
+    <tr> 
+      <td bgcolor="#CCCCCC" nowrap><b> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" style="font-size:11px"> 
+        <center>
+          This document is part of WebTools Help located at <font color="#000000"><a href="http://docs.proscriptum.com/" class="RO_A">http://docs.proscriptum.com</a></font> 
+        </center>
+        </font></b></td>
+    </tr>
+  </table>
+  <br>
+  <table border="0" cellspacing="2" cellpadding="2" bgcolor="#666666" width="800">
+    <tr> 
+      <td bgcolor="#F0F0FF" width="100%"> <font face="Verdana, Arial, Helvetica, sans-serif"><b><font size="2" color="#000000"><font color="#006600"><a name="basics_templates"></a> 
+        <center><H3>Errors::Errors - Module for error/die/exit/abort proceeding.</H3>
+        </center>
+        <font size="2" face="Verdana, Arial, Helvetica, sans-serif"></font></font> 
+        </font></b><strong><font size="2">&nbsp;&nbsp;Errors module allows you 
+        to handle and proceed a large list of errors/signals<br>
+        <br>
+        Complete list of methods are shown below:</font></strong></font><br> <br> 
+        <table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#999999">
+          <tr> 
+            <td bgcolor="#E0E0FF"><strong><font color="#FF0000" size="2" face="Verdana, Arial, Helvetica, sans-serif">attach 
+              <font color="#000099">::</font> content <font color="#000099">::</font> 
+              detach <font color="#000099">::</font> die <font color="#000099">::</font> 
+              error <font color="#000099">::</font> exit <font color="#000099">::</font> 
+              install <font color="#000099">::</font> header <font color="#000099">::</font> 
+              print <font color="#000099">::</font> uninstall</font></strong></td>
+          </tr>
+        </table>
+        <br> <br> <strong><font color="#FF0000" size="2" face="Verdana, Arial, Helvetica, sans-serif">SYNOPSIS</font></strong><br> 
+        <br> <table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#999999">
+          <tr> 
+            <td bgcolor="#E0E0FF"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>use</strong> 
+              <font color="#FF0000">Errors::Errors</font>;<br>
+              <br>
+              <strong>use</strong> strict;<br>
+              <br>
+              my $obj = <font color="#FF0000">Errors::Errors</font>-&gt;new();<br>
+              <br>
+              $obj-&gt;<strong>content</strong>(0);<br>
+              $obj-&gt;<strong>header</strong>();<br>
+              $obj-&gt;<strong>attach</strong>('xreader'); <font color="#666666"># 
+              Attach sub object (sobject) for error of type 'xreader'.</font><br>
+              $obj-&gt;<strong>attach</strong>('myown'); <font color="#666666"># 
+              Attach sub object for error of type 'myown'.</font><br>
+              <br>
+              my $hash = {<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;name=&gt;'July',<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;born_year=&gt;'81',<br>
+              };<br>
+              <br>
+              $obj-&gt;<strong>attach_object</strong>('xreader',$hash); <font color="#666666"># 
+              Hash ref or object</font><br>
+              <br>
+              $obj-&gt;<strong>install</strong>('onTerm',\&amp;custom); <font color="#666666"># 
+              Install sub for term event.</font><br>
+              $obj-&gt;<strong>install</strong>('onError',\&amp;anysub,'xreader'); 
+              <br>
+              <font color="#666666"># Install sub for xreader sobject which will 
+              be called when error occure.</font><br>
+              $obj-&gt;<strong>install</strong>('onExit',\&amp;leave);<font color="#666666"> 
+              # Install sub for exit event.</font><br>
+              $obj-&gt;<strong>install</strong>('onTerm',\&amp;custom,'myown'); 
+              <font color="#666666"># Install additional term sub for 'myown' 
+              sobject.</font><br>
+              <br>
+              $obj-&gt;<strong>error</strong>(7,'xreader'); <font color="#666666"># 
+              Set error '7' for 'xreader' sobject and force execution of error 
+              chain.</font><br>
+              <br>
+              <font color="#666666">#my $h = $obj-&gt;<strong>fetch_object</strong>('xreader'); 
+              &nbsp;# Fetch attached object from xreader.<br>
+              #$obj-&gt;<strong>print</strong>($h-&gt;{name}.&quot;\n&quot;);</font><br>
+              <br>
+              $obj-&gt;<strong>uninstall</strong>('onError','xreader'); <font color="#666666"># 
+              Remove 'xreader' sub from 'error' chain.</font><br>
+              <br>
+              $obj-&gt;<strong>detach_object</strong>('xreader'); <font color="#666666"># 
+              Remove attached object from xreader.</font><br>
+              $obj-&gt;<strong>detach</strong>('xreader'); <font color="#666666"># 
+              Remove xreader (and attached objects).</font><br>
+              <br>
+              $obj-&gt;<strong>install</strong>('onTimeOut',\&amp;timeout); <font color="#666666"># 
+              Install timeout sub routine.</font><br>
+              <strong>eval</strong> 'alarm(1);';<font color="#666666"> # Force 
+              alarm after 1s</font><br>
+              <strong>sleep</strong>(2); <font color="#666666"># Wait 2 sec, so 
+              alarm will be activeted and 'timeout' chain will be turned.</font><br>
+              <font color="#666666">#Note: Press CTRL+C to active 'INT' signal 
+              ('onTerm' event) before time to flow out.</font><br>
+              <br>
+              <font color="#666666">#$obj-&gt;<strong>exit</strong>(); # Force 
+              exit of program.<br>
+              #$obj-&gt;<strong>die</strong>(); # Force die of program.</font><br>
+              <br>
+              #By default script close 'normally', so 'destroy' chain will be 
+              executed.<br>
+              <strong>sub</strong> custom {<br>
+              &nbsp;&nbsp;my $obj = shift; <font color="#666666"># 'Errors' object</font><br>
+              &nbsp;&nbsp;my %in = @_;<br>
+              &nbsp;&nbsp;my $type = $in{'type'}; <font color="#666666"># Error 
+              type: 'term'</font><br>
+              &nbsp;&nbsp;my $name = $in{'name'}; <font color="#666666"># Custom 
+              error name</font><br>
+              &nbsp;&nbsp;my $sig = $in{'signal'}; <font color="#666666"># Invoked 
+              signal (term,quit,pipe...)</font><br>
+              <font color="#666666">&nbsp;&nbsp;# ...blah...blah...</font><br>
+              &nbsp;&nbsp;<strong>print</strong> &quot;Custom($name)\n&quot;;<br>
+              }<br>
+              <strong>sub</strong> leave {<br>
+              &nbsp;&nbsp;my $obj = shift;<br>
+              &nbsp;&nbsp;my %in = @_;<br>
+              &nbsp;&nbsp;my $type = $in{'type'}; <font color="#666666"># Error 
+              type: 'exit','die','destroy'</font><br>
+              &nbsp;&nbsp;my $err = $in{'error'}; <font color="#666666"># Error 
+              value</font><br>
+              &nbsp;&nbsp;my $name = $in{'name'};<font color="#666666"> # Custom 
+              error name</font><br>
+              &nbsp;&nbsp;my $params = $in{'params'};<font color="#666666"> # 
+              Additional parameters (ref to @)</font><br>
+              &nbsp;&nbsp;my @params = @$params;<br>
+              <font color="#666666">&nbsp;&nbsp;# ...blah...blah...</font><br>
+              &nbsp;&nbsp;<strong>print</strong> &quot;$type\n&quot;;<br>
+              }<br>
+              <strong>sub</strong> timeout<br>
+              {<br>
+              &nbsp;&nbsp;my $obj = shift;<br>
+              &nbsp;&nbsp;my %in = @_;<br>
+              &nbsp;&nbsp;my $type = $in{'type'}; <font color="#666666"># Error 
+              type: 'term'</font><br>
+              &nbsp;&nbsp;my $name = $in{'name'}; <font color="#666666"># Custom 
+              error name</font><br>
+              &nbsp;&nbsp;my $sig = $in{'signal'}; <font color="#666666"># Invoked 
+              signal: 'alrm'</font><br>
+              <font color="#666666">&nbsp;&nbsp;# ...blah...blah...</font><br>
+              &nbsp;&nbsp;<strong>print</strong> &quot;Timeout\n&quot;;<br>
+              }<br>
+              <strong>sub</strong> anysub {<br>
+              &nbsp;&nbsp;my $obj = shift;<br>
+              &nbsp;&nbsp;my %in = @_;<br>
+              &nbsp;&nbsp;my $type = $in{'type'};<font color="#666666"> # Error 
+              type: 'error'</font><br>
+              &nbsp;&nbsp;my $err = $in{'error'}; <font color="#666666"># Error 
+              message</font><br>
+              &nbsp;&nbsp;my $name = $in{'name'}; <font color="#666666"># Custom 
+              error name</font><br>
+              &nbsp;&nbsp;my $to = $in{'to'}; <font color="#666666"># Message 
+              is sent &quot;to&quot; </font><br>
+              &nbsp;&nbsp;my $params = $in{'params'}; <font color="#666666"># 
+              Additional parameters (ref to @)</font><br>
+              &nbsp;&nbsp;my @params = @$params;<br>
+              <br>
+              &nbsp;&nbsp;<strong>if</strong>($name eq $to &amp;&amp; $to eq 'xreader')<br>
+              &nbsp;&nbsp;{<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;$obj-&gt;<strong>print</strong> (&quot;Error 
+              in Xreader!!!\n&quot;);<font color="#666666"> # If error is raised 
+              in 'xreader'</font><br>
+              &nbsp;&nbsp;&nbsp;&nbsp;my $h = $obj-&gt;<strong>fetch_object</strong>('xreader');<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;$obj-&gt;<strong>print</strong> ($h-&gt;{born_year}.&quot;\n&quot;);<br>
+              &nbsp;&nbsp;}<br>
+              &nbsp;<strong>else</strong><br>
+              &nbsp;&nbsp;{<br>
+              &nbsp;&nbsp;&nbsp;$obj-&gt;<strong>print</strong> (&quot;Error in 
+              ... I don't know ;-)!!!\n&quot;);<br>
+              &nbsp;&nbsp;}<br>
+              }<font color="#000000"><strong><br>
+              </strong></font><strong><font color="#666666"><br>
+              </font><font face="Verdana, Arial, Helvetica, sans-serif"><b><font size="2" color="#000000"><font color="#006600">[<a href="#top" class="RO_A">Top</A>]</font></font></b></font><font color="#666666"> 
+              </font></strong></font></td>
+          </tr>
+        </table>
+        <br> <strong><font color="#FF0000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><br>
+        Install<br>
+        </font></strong><br> <table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#999999">
+          <tr> 
+            <td bgcolor="#E0E0FF"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">As 
+              any other 'CPAN' module you just have to do follow simple steps 
+              to complete installation:<strong><br>
+              <br>
+              </strong></font><font color="#000066"><b>tar -zxvf Errors-1.02.tar.gz<br>
+              cd Errors-1.02<br>
+              perl Makefile.PL<br>
+              make<br>
+              make test<br>
+              make install<br>
+              make clean</b></font></font><font face="Verdana, Arial, Helvetica, sans-serif"><b><font size="2"><br>
+              <br>
+              Note: In WebTools engine this module is already installed!<br>
+              <br>
+              </font><font size="2" color="#000000"><font color="#006600">[<a href="#top" class="RO_A">Top</A>]</font></font></b></font></td>
+          </tr>
+        </table>
+        <br> <br> <strong><font color="#FF0000" size="2" face="Verdana, Arial, Helvetica, sans-serif">Getting 
+        Started</font></strong><br> <br> <table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#999999">
+          <tr> 
+            <td bgcolor="#E0E0FF"> <font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">&nbsp;&nbsp;First 
+              question is: Why I have to use Errors module in my Perl program?<br>
+              In large projects you have to use many libraries, modules and of 
+              course you have to catch all errors in, also in some cases you need 
+              to make some finalize procedures at the end of your scripts. To 
+              do that you may need to write subs for different errors, to write 
+              code for interrupts/events/signals but what structure you use? None? 
+              Huh! You just write code and grubby you program! It's a disgrace. 
+              <br>
+              &nbsp;This module offer to you and your scripts centralize errors 
+              handling and proceeding system.</font></font><font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><strong><br>
+              <br>
+              </strong><font color="#FF0000"> <U>Comprehensive example:</U></font><br>
+              &nbsp;&nbsp;Let guess, that we have to develop script (no matter 
+              whether it is Web based or a console application), which, as any 
+              professional script, needs to care about occurred errors.<br>
+              In general case you have to implement a sub for showing an error 
+              messages; logging code and in extreme situations to send mails to 
+              your support team; code which will protect you from fatal errors; 
+              code which will protect your script from infinitive loops.<br>
+              &nbsp;&nbsp;Described example is really superficial, but good enough 
+              to have an idea about enormous requirement of error handling system 
+              like this.<br>
+              &nbsp;&nbsp;Solution for lyric problem above is shown bellow:<strong><br>
+              <br>
+              use</strong> Errors::Errors;<br>
+              <br>
+              <strong>use</strong> strict;</font></font> 
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+                my $obj = Errors::Errors-&gt;new();</font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$obj-&gt;<strong>attach</strong>('display');&nbsp;&nbsp;<font color="#666666"># 
+                Virtual 'display' object (sobject)</font><br>
+                $obj-&gt;<strong>attach</strong>('logs');&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                <font color="#666666"># Virtual 'logs' object (sobject)</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif">$obj-&gt;<strong>install</strong>('onExit',\&amp;catch_exit); 
+                <font color="#666666"># Catch exit.</font><br>
+                $obj-&gt;<strong>install</strong>('onError',\&amp;event_handler,'display'); 
+                <font color="#666666"># Print error to display</font><br>
+                $obj-&gt;<strong>install</strong>('onError',\&amp;event_handler,'logs'); 
+                <font color="#666666"># Do same to your hdd</font><br>
+                $obj-&gt;<strong>install</strong>('onTimeOut',\&amp;timeout); 
+                <font color="#666666"># Handle overstep time limit.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>eval</strong> 
+                'alarm(100);'; <font color="#666666"># Give 100 seconds lifetime 
+                to your script.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>eval</strong> 
+                q|<br>
+                <font color="#666666">#... code which may fail with fatal error!</font><br>
+                $obj-&gt;<strong>error</strong>('Error!','display'); # Force error<br>
+                $obj-&gt;<strong>error</strong>('Error!','logs'); # Force error<br>
+                $obj-&gt;<strong>exit</strong>();<br>
+                <font color="#666666"># <strong>exit</strong>() and $obj-&gt;<strong>exit</strong>() 
+                will close you application NOT only the eval() block!<br>
+                # however <strong>exit</strong>() will trigger 'destroy' event, 
+                but $obj-&gt;exit() will trigger 'exit' event!</font><br>
+                |;<br>
+                <br>
+                <font color="#666666"># Due 'eval' code above, following lines 
+                will not be executed!</font><br>
+                <strong>while</strong>(1)<br>
+                {<br>
+                <font color="#666666">&nbsp;&nbsp;# Any action which may bring 
+                application to infinitive loop.<br>
+                &nbsp;&nbsp;# After 100 sec this problem will be busted</font><br>
+                }</font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>sub</strong> 
+                event_handler<br>
+                {<br>
+                &nbsp;&nbsp;my $obj = shift;<br>
+                &nbsp;&nbsp;my %in = @_;<br>
+                &nbsp;&nbsp;my $type = $in{'type'}; <font color="#666666"># Error 
+                type: 'error'</font><br>
+                &nbsp;&nbsp;my $err = $in{'error'}; <font color="#666666"># Error 
+                message</font><br>
+                &nbsp;&nbsp;my $name = $in{'name'};<font color="#666666"> # Custom 
+                error name</font><br>
+                &nbsp;&nbsp;my $to = $in{'to'}; <font color="#666666"># Message 
+                is sent &quot;to&quot;</font><br>
+                &nbsp;&nbsp;my $params = $in{'params'}; <font color="#666666"># 
+                Additional parameters (ref to @)</font><br>
+                &nbsp;&nbsp;my @params = @$params;<br>
+                <br>
+                &nbsp;&nbsp;<strong>if</strong>($name eq $to &amp;&amp; $to eq 
+                'display')<br>
+                &nbsp;&nbsp;{<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<font color="#666666"># Print your error 
+                message...</font><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<strong>print</strong> &quot;Error: $err 
+                (invoked for $name)\n&quot;;<br>
+                &nbsp;&nbsp;}</font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+                &nbsp;&nbsp;<strong>if</strong>($name eq $to &amp;&amp; $to eq 
+                'logs')<br>
+                &nbsp;&nbsp;&nbsp;{<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#666666"># Log your 
+                error message to hdd...</font><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>print</strong> &quot;Error: 
+                $err (invoked for $name)\n&quot;;<br>
+                &nbsp;&nbsp;&nbsp;}<br>
+                }</font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>sub</strong> 
+                timeout<br>
+                {<br>
+                &nbsp;&nbsp;my $obj = shift;<br>
+                &nbsp;&nbsp;my %in = @_;<br>
+                &nbsp;&nbsp;my $type = $in{'type'}; <font color="#666666"># Error 
+                type: 'term'</font><br>
+                &nbsp;&nbsp;my $name = $in{'name'}; <font color="#666666"># Custom 
+                error name</font><br>
+                &nbsp;&nbsp;my $sig = $in{'signal'}; <font color="#666666"># Invoked 
+                signal: 'alrm'</font><br>
+                <br>
+                &nbsp;&nbsp;$obj-&gt;<strong>error</strong>('Timeout!', 'display');<br>
+                &nbsp;&nbsp;$obj-&gt;<strong>error</strong>('Timeout!', 'logs');<br>
+                }</font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>sub</strong> 
+                catch_exit<br>
+                {<br>
+                &nbsp;&nbsp;my $obj = shift;<br>
+                &nbsp;&nbsp;my %in = @_;<br>
+                &nbsp;&nbsp;my $type = $in{'type'};<font color="#666666"> # Error 
+                type: 'exit','die','destroy'</font><br>
+                &nbsp;&nbsp;my $err = $in{'error'}; <font color="#666666"># Error 
+                value</font><br>
+                &nbsp;&nbsp;my $name = $in{'name'}; <font color="#666666"># Custom 
+                error name</font><br>
+                &nbsp;&nbsp;my $params = $in{'params'};<font color="#666666"> 
+                # Additional parameters (ref to @)</font><br>
+                &nbsp;&nbsp;my @params = @$params;</font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+                &nbsp;&nbsp;<strong>if</strong>($type eq 'exit')<br>
+                &nbsp;&nbsp;&nbsp;{<br>
+                <font color="#666666">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Oops your 
+                code use 'exit' to abort script...</font><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$obj-&gt;<strong>error</strong>('Oops!','display');<br>
+                <font color="#666666">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# ...</font><br>
+                &nbsp;&nbsp;&nbsp;}<br>
+                }</font><font face="Verdana, Arial, Helvetica, sans-serif"><font size="2"><strong><br>
+                </strong></font><b><font size="2"><br>
+                </font><font size="2" color="#000000"><font color="#006600">[<a href="#top" class="RO_A">Top</A>]</font></font></b></font></p>
+              </td>
+          </tr>
+        </table>
+        <br> <br> <strong><font color="#FF0000" size="2" face="Verdana, Arial, Helvetica, sans-serif">How 
+        It Works?</font></strong><br> <br> <table width="100%" border="0" cellspacing="1" cellpadding="1" bgcolor="#999999">
+          <tr> 
+            <td bgcolor="#E0E0FF"> <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">&nbsp;&nbsp;First 
+                you must to create one object for your program:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"> 
+                <b><font color="#000066">use Errors::Errors;<br>
+                $obj = Errors::Errors-&gt;new();</font></b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">This 
+                object will contain pointers to your subs that handle occurred 
+                errors.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">This 
+                module can handle follow base errors/events:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">exit(<font color="#990000">onExit</font>), 
+                die(<font color="#990000">onExit</font>), TERM/STOP/PIPE/QUIT/HUP/INT(<font color="#990000">onTerm</font>), 
+                ALRM(<font color="#990000">onTimeout</font>), and custom errors(<font color="#990000">onError</font>).</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">If 
+                you want to do something when your script ends, set your custom 
+                sub:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"> 
+                <font color="#000066"><b>$obj-&gt;install('onExit',\&amp;leave);</b></font></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">where 
+                \&amp;leave is pointer to your sub 'leave'. When your script ends 
+                your sub program 'leave' will be executed before the end. That 
+                will be happened at the end of $obj scope i.e. in DESTROY section 
+                of module. Also you can provoke execution of 'leave' if you write 
+                follow line in program:<br>
+                <br>
+                <font color="#000066"><b>$obj-&gt;exit($code_error);</b></font><br>
+                or<br>
+                <font color="#000066"><b>$obj-&gt;die($code_error);</b></font></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">If 
+                you want to handle ALRM signal write line like this:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000066"><b>$obj-&gt;install('onTimeout',\&amp;custom);</b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">where 
+                'custom' is your custom sub that handle ALRM signal.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">To 
+                handle TERM/STOP/PIPE/QUIT/HUP/INT signals use follow like:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><b><font color="#000066">$obj-&gt;install('onTerm',\&amp;custom);</font></b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">where 
+                'custom' is your custom sub that handle listed signals.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">If 
+                you want to initialize your custom errors write code bellow:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000066"><b>$obj-&gt;install('onError',\&amp;anysub);</b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">So 
+                when you call method bellow, somewhere in script, you will rise 
+                execution of 'anysub'!</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000066"><b>$obj-&gt;error($code_error);</b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">Of 
+                course all your subs will receive additional parameters so you 
+                will be able to find reason for errors (and respective error codes). 
+                See SYSNOPSIS above.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">In 
+                single script these methods are strong enough, but if you have 
+                a complex program with lot of libraries/modules you may want to 
+                have a single 'errors' object for all your libraries/modules. 
+                But how you can handle TERM signal for all yours different libraries??? 
+                The idea is quite simple, we will still continue to use our global 
+                (single) object, but we will create &quot;sub objects&quot; for 
+                all additional libraries/modules! </font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">To 
+                add new sub object do follow:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"> 
+                <b><font color="#000066">$obj-&gt;attach('some');</font></b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">This 
+                will create sub object called 'some'. To install 'onTerm' signal 
+                for this sub object (SObject) do follow:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"> 
+                <font color="#000066"><b>$obj-&gt;install('onTerm',\&amp;custom,'some');</b></font></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">Also 
+                to catch 'exit' for SObject call:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"> 
+                <b><font color="#000066">$obj-&gt;install('onExit,',\&amp;leave,'some');</font></b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">To 
+                rise custom error for 'some' SObject, call:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000066"><b>$obj-&gt;error($code_error,'some',@additional_parameters);</b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">To 
+                exit&#133;:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000066"><b>$obj-&gt;exit($code_error,'some',</b><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>@additional_parameters</b></font><b>);</b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">&#133; 
+                and so on.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">Note:<br>
+                <b><font color="#000066">$obj-&gt;error($code_error,'some');</font></b><br>
+                will rise error in 'some' sub object<br>
+                <font color="#000066"><b>$obj-&gt;error($code_error);</b></font><br>
+                will rise error in 'main' object!!! (Think about that like parent 
+                object and respective children)!</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">Let 
+                imagine that we have a lot of children (SObjects) and one parent 
+                object. Also let for all these objects we have sub programs that 
+                catch exit event. And now let our program gone to the end of code, 
+                so program must quit and Perl must destroy and unload our program!<br>
+                However Errors module have job to do, it must call all subs that 
+                are joined into 'exit' chain!<br>
+                See follow block:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#990000"><b>foreach 
+                $obj call {<br>
+                </b>| SObject 1 | -&gt; onExit sub<br>
+                | SObject 2 | -&gt; onExit sub<br>
+                &#133;<br>
+                | SObject n | -&gt; onExit sub<br>
+                | Main object | -&gt; onExit sub<b><br>
+                }</b></font><font color="#000000"><br>
+                <strong><br>
+                </strong> </font><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><strong>Note:</strong> 
+                &quot;main&quot; handling sub is called after all sobject subs, 
+                so if you catch onError event don't exit application in sobject 
+                routines, becase all calls to next subs in chain will fail.</font></font><br>
+                <font color="#000000"><br>
+                All this will be happened with all other events/signals! So you 
+                have to check reason and decide whether you must do anything into 
+                respective sub! See simple example:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#990000">sub 
+                anysub {<br>
+                my $obj = shift; # 'Errors' object<br>
+                my $err = shift; # Error number/message<br>
+                my $name = shift; # 'name' of error<br>
+                if($name =~ m/some/si)<br>
+                &nbsp;{<br>
+                &nbsp;&nbsp;&nbsp;$obj-&gt;print (&quot;Error in some!&quot;);<br>
+                &nbsp;}<br>
+                else<br>
+                &nbsp;{<br>
+                &nbsp;&nbsp;&nbsp;$obj-&gt;print (&quot;Error in ... I don't know 
+                :-)!!!&quot;);<br>
+                &nbsp;}<br>
+                }</font><font color="#000000"><br>
+                If name is 'some' we can do something, but when the error is somewhere 
+                else you may want to miss it! You have to decide!</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><br>
+                To delete SObject call:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><b><font color="#000066">$obj-&gt;detach('some');</font></b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">To 
+                uninstall event/signal:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><b><font color="#000066">$obj-&gt;uninstall('onError','some');</font></b> 
+                # for some SObject<br>
+                or<br>
+                <font color="#000066"><b>$obj-&gt;uninstall('onError');</b></font> 
+                # for main object</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><br>
+                At the end I would like to notice that this module was originally 
+                written for Web and more correct for WebTools Perl sub system 
+                (look at <a href="http://www.proscriptum.com/"><b><font color="#FF0000">http://www.proscriptum.com/</font></b></a>)</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">So 
+                to allow Errors object to let know, whether content type is sent 
+                use follow line:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000066"><b>$obj-&gt;content($state);</b></font><font color="#000000"> 
+                # $state can be '1' - yes and '0' - is not sent yet!</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">If 
+                you want to send default content (HTTP) header use:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><b><font color="#000066">$obj-&gt;header();</font></b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">Note: 
+                If <font color="#990000">$obj-&gt;content()</font> is '1' then 
+                <font color="#990000">$obj-&gt;header()</font> will return immediately 
+                without printing default header, but if you are not still sent 
+                header (or if you forgot to tell that to Error object via <font color="#990000">$obj-&gt;content(1)</font> 
+                ) then <font color="#990000">$obj-&gt;header()</font> will sent 
+                default header.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">To 
+                overwrite default header function use statement bellow:</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000"><b><font color="#000066">$obj-&gt;install('header',\&amp;your_header_sub);</font></b></font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">All 
+                this (header and content functions) is needful because if this 
+                script is WEB based and error occurred you may want to print some 
+                text into browser, but if you forgot to print content, error will 
+                occurred (Internal Error). And vice versa: If content is already 
+                sent and you print it again then second content header will appear 
+                in browser.</font></font></p>
+              <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><font color="#000000">For 
+                more information, look at Errors::Errors module.<br>
+                </font></font><font face="Verdana, Arial, Helvetica, sans-serif"><b><font size="2"> 
+                <br>
+                </font><font size="2" color="#000000"><font color="#006600">[<a href="#top" class="RO_A">Top</A>]</font></font></b></font></p></td>
+          </tr>
+        </table>
+        
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table border="0" cellspacing="1" cellpadding="1" bgcolor="#333333" width="800">
+    <tr>
+      <td bgcolor="#CCCCCC" nowrap><b> <font face="Verdana, Arial, Helvetica, sans-serif" size="2" style="font-size:11px">
+        <center>
+          <font color="#000000"><a href="http://www.proscriptum.com/index.html" class="RO_A">www.proscriptum.com</a></font> 
+          is property of Julian Lishev. All rights reserved, Sofia 2001-2003. 
+        </center>
+        </font></b></td>
+    </tr>
+  </table>
+</center>
+</body>
+</html>
