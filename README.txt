@@ -50,8 +50,8 @@ Install
 As any other 'CPAN' module you just have to do follow simple steps to complete 
 installation:
 
-tar -zxvf Errors-1.00.tar.gz
-cd Errors-1.00
+tar -zxvf Errors-1.01.tar.gz
+cd Errors-1.01
 perl Makefile.PL
 make
 make test

@@ -20,7 +20,7 @@ $Errors::Errors::sys_exit_called = 0;
 BEGIN
  {
   use vars qw($VERSION @ISA @EXPORT);
-  $VERSION = "1.00";
+  $VERSION = "1.01";
   @ISA = qw(Exporter);
   @EXPORT = qw();
  }
@@ -38,7 +38,7 @@ sub AUTOLOAD
     exit;
    }
 my $ref =  $self->{__subs}->{$name};
-&$ref($self,@_);
+if(ref($ref)) { &$ref($self,@_); }
 }
 
 sub new
@@ -113,10 +113,10 @@ sub __default_SIGNALS
   foreach $sub (keys %$hashref)
    {
     my $ref = $hashref->{$sub}->{'onterm'};
-    &$ref($self,'term','');
+    if(ref($ref)) { &$ref($self,'term',''); }
    }
   my $ref = $self->{'__subs'}->{'onterm'};
-  &$ref($self,'term','');
+  if(ref($ref)) { &$ref($self,'term',''); }
 }
 
 sub __default_ALRM
@@ -127,10 +127,10 @@ sub __default_ALRM
   foreach $sub (keys %$hashref)
    {
     my $ref = $hashref->{$sub}->{'ontimeout'};
-    &$ref($self,'timeout','');
+    if(ref($ref)) { &$ref($self,'timeout',''); }
    }
   my $ref = $self->{'__subs'}->{'ontimeout'};
-  &$ref($self,'timeout','');
+  if(ref($ref)) { &$ref($self,'timeout',''); }
 }
 
 sub install
@@ -298,10 +298,10 @@ sub error
   foreach $sub (keys %$hashref)
    {
     my $ref = $hashref->{$sub}->{'onerror'};
-    &$ref($self,$value,$name,@_);
+    if(ref($ref)) { &$ref($self,$value,$name,@_); }
    }
   my $ref = $self->{'__subs'}->{'onerror'};
-  &$ref($self,$value,$name,@_);
+  if(ref($ref)) { &$ref($self,$value,$name,@_); }
  
   return(@res);
 }
@@ -318,10 +318,10 @@ sub die
    foreach $sub (keys %$hashref)
     {
      my $ref = $hashref->{$sub}->{'onexit'};
-     &$ref($self,$Errors::Errors::sys_last_ERROR,'','die');
+     if(ref($ref)) { &$ref($self,$Errors::Errors::sys_last_ERROR,'','die'); }
     }
    my $ref = $self->{'__subs'}->{'onexit'};
-   &$ref($self,$Errors::Errors::sys_last_ERROR,'','die');
+   if(ref($ref)) { &$ref($self,$Errors::Errors::sys_last_ERROR,'','die'); }
    die(@_);
   }
   else {die(@_);}
@@ -339,10 +339,10 @@ sub exit
    foreach $sub (keys %$hashref)
     {
      my $ref = $hashref->{$sub}->{'onexit'};
-     &$ref($self,$Errors::Errors::sys_last_ERROR,'','exit');
+     if(ref($ref)) { &$ref($self,$Errors::Errors::sys_last_ERROR,'','exit'); }
     }
    my $ref = $self->{'__subs'}->{'onexit'};
-   &$ref($self,$Errors::Errors::sys_last_ERROR,'','exit');
+   if(ref($ref)) { &$ref($self,$Errors::Errors::sys_last_ERROR,'','exit'); }
    exit(@_);
   }
   else {exit(@_);}
@@ -361,10 +361,10 @@ sub DESTROY
     foreach $sub (keys %$hashref)
      {
       my $ref = $hashref->{$sub}->{'onexit'};
-      &$ref($self,$Errors::Errors::sys_last_ERROR,'','destroy');
+      if(ref($ref)) { &$ref($self,$Errors::Errors::sys_last_ERROR,'','destroy'); }
      }
     my $ref = $self->{'__subs'}->{'onexit'};
-    &$ref($self,$Errors::Errors::sys_last_ERROR,'','destroy');
+    if(ref($ref)) { &$ref($self,$Errors::Errors::sys_last_ERROR,'','destroy'); }
    }
 }
 
